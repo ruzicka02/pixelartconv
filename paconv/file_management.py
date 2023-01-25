@@ -25,7 +25,7 @@ def image_prepare(path: Path, dims: tuple) -> np.ndarray:
     return image
 
 
-def load_image(name: str, dims: tuple = (10, 10), percent_filled: float = 0.7):
+def load_image(name: str, dims: tuple):
     """
     Loads a PNG image from the `img` directory, performs various operations
     and returns it as an array. In case something goes wrong, returns None.
@@ -39,17 +39,18 @@ def load_image(name: str, dims: tuple = (10, 10), percent_filled: float = 0.7):
         image = image_prepare(path, dims)
         return image
     except (FileNotFoundError, UnidentifiedImageError, ValueError, AssertionError) as err:
-        print(err)
         return None
 
 
-def save_image(data: np.ndarray, name: str = "export"):
-    name += ".png"
+def save_image(data: np.ndarray, show: bool = False, name: str = "export"):
     path = Path(__file__).parent.parent
-    path = (path / name).resolve()
+    path = (path / (name + ".png")).resolve()
 
     image = Image.fromarray(np.uint8(data)).convert('RGB')
     image.save(path)
+
+    if show:
+        image.show()
 
 
 def load_colors(name: str):
@@ -65,7 +66,6 @@ def load_colors(name: str):
     path = (path / 'img' / name).resolve()
 
     if not path.is_file():
-        print("File not found - aborting operation")
         return None
 
     with open(path, 'r') as file:
