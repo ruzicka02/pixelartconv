@@ -20,6 +20,10 @@ def image_prepare(path: Path, dims: tuple) -> np.ndarray:
     image = ImageOps.fit(image, dims)
     image = np.asarray(image)
 
+    # remove alpha channel/transparency
+    if image.shape[2] == 4:
+        image = image[:, :, :3]
+
     assert image.shape == (*dims, 3)
 
     return image
@@ -38,7 +42,7 @@ def load_image(name: str, dims: tuple):
     try:
         image = image_prepare(path, dims)
         return image
-    except (FileNotFoundError, UnidentifiedImageError, ValueError, AssertionError) as err:
+    except (FileNotFoundError, UnidentifiedImageError, ValueError, AssertionError):
         return None
 
 
@@ -48,6 +52,12 @@ def save_image(data: np.ndarray, show: bool = False, name: str = "export"):
 
     image = Image.fromarray(np.uint8(data)).convert('RGB')
     image.save(path)
+
+    path = (path.parent / (name + "_scaled.png")).resolve()
+    factor = round(512 / data.shape[0])  # type 'int'
+    if factor > 1:
+        image = ImageOps.scale(image, factor, resample=Image.NEAREST)
+        image.save(path)
 
     if show:
         image.show()
