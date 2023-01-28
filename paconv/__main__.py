@@ -1,5 +1,6 @@
 import sys
 from pathlib import Path
+from time import time
 
 import logic, file_management
 
@@ -27,6 +28,8 @@ if file_name[0] == '-':
     print(more_info)
     sys.exit(1)
 
+start_time = time()
+
 img = file_management.load_image(file_name, dims)
 colors = file_management.load_colors(file_name)
 
@@ -39,3 +42,4 @@ res = logic.convert_img(img, colors)
 file_management.save_image(res, False)
 
 print("Conversion was successful.")
+print(f"Duration: {time() - start_time:.2f} s")

@@ -24,5 +24,4 @@ Then, launch the script using:
     python paconv [file_name] [width] [height]
 ```
 
-if target width/height is not selected, the file will be 16 x 16 by default. Resulting image will be generated in the root directory as `result.png`. There will also be an upscaled version to 512 x 512 named `result_scaled.png`.
-
+if target width/height is not selected, the file will be 16 x 16 by default. Resulting image will be generated in the root directory as `result.png`. There will also be an upscaled version with height approximately equal to 512 pixels (so that the upscale factor is a whole number) named `result_scaled.png`. This generates only in case where this upscale would have an effect (when the factor is at least 2).
