@@ -34,6 +34,8 @@ def load_image(name: str, dims: tuple):
     Loads a PNG image from the `img` directory, performs various operations
     and returns it as an array. In case something goes wrong, returns None.
 
+    :param str name: File name.
+    :param tuple dims: Pair of target image dimensions (width, height).
     :return: numpy.ndarray or None
     """
     name += ".png"
