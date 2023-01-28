@@ -24,7 +24,8 @@ def image_prepare(path: Path, dims: tuple) -> np.ndarray:
     if image.shape[2] == 4:
         image = image[:, :, :3]
 
-    assert image.shape == (*dims, 3)
+    # conversion to array "transposes" the image
+    assert image.shape == (dims[1], dims[0], 3)
 
     return image
 
