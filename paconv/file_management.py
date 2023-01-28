@@ -17,7 +17,7 @@ def image_prepare(path: Path, dims: tuple) -> np.ndarray:
     # cannot upscale image
     assert image.size[0] >= dims[0] and image.size[1] >= dims[1]
 
-    image = ImageOps.fit(image, dims)
+    image = ImageOps.fit(image, dims, method=Image.BICUBIC)
     image = np.asarray(image)
 
     # remove alpha channel/transparency

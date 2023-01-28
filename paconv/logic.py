@@ -40,19 +40,33 @@ def px_distance_hue(p1: tuple, p2: tuple) -> int:
     return px_distance(diff, tuple([brightness_avg for _ in range(3)]))
 
 
-def compare_px(p1: tuple, p2: tuple, ref: tuple) -> bool:
+def px_distance_lightness(p1: tuple, p2: tuple) -> int:
     """
-    Compares two pixels with a reference pixel. Hue difference is the primary criteria used.
+    Calculates distance between the lightness of given pixel colors.
+
+    :param p1: First input pixel
+    :param p2: Second input pixel
+    :return: Square of HSL lightness difference.
+    """
+    assert len(p1) == len(p2) == 3
+
+    return ((max(p1) + min(p1) - max(p2) - min(p2)) / 2) ** 2
+
+
+def compare_px(p1: tuple, p2: tuple, ref: tuple, weight: float = 10.) -> bool:
+    """
+    Compares two pixels with a reference pixel. Considers both hue and absolute difference
+    with given weight.
     :param p1: First input pixel
     :param p2: Second input pixel
     :param ref: Reference pixel
+    :param weight: Weight of hue in comparison.
     :return: True if p1 is closer to ref than p2.
     """
     hue_diff = px_distance_hue(p1, ref) - px_distance_hue(p2, ref)
-    if hue_diff != 0:
-        return hue_diff < 0
+    lightness_diff = px_distance_lightness(p1, ref) - px_distance_lightness(p2, ref)
 
-    return px_distance(p1, ref) - px_distance(p2, ref) < 0
+    return weight * hue_diff + lightness_diff < 0
 
 
 def find_closest_match(color_ref: tuple, colors: list[tuple]) -> tuple:
