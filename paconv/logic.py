@@ -23,23 +23,53 @@ def px_distance(p1: tuple, p2: tuple) -> int:
     return sum([(x - y) ** 2 for x, y in zip(p1, p2)])
 
 
-def find_closest_match(px: tuple, colors: list[tuple]) -> tuple:
+def px_distance_hue(p1: tuple, p2: tuple) -> int:
+    """
+    Calculates distance between the hue of given pixel colors. Considers the pixel difference
+    and its average brightess in the calculation.
+
+    :param p1: First input pixel
+    :param p2: Second input pixel
+    :return: Square of Euclidean distance between pixel difference and shade of gray.
+    """
+    assert len(p1) == len(p2) == 3
+
+    diff = tuple([val1 - val2 for val1, val2 in zip(p1, p2)])
+    brightness_avg = sum(diff) / 3
+
+    return px_distance(diff, tuple([brightness_avg for _ in range(3)]))
+
+
+def compare_px(p1: tuple, p2: tuple, ref: tuple) -> bool:
+    """
+    Compares two pixels with a reference pixel. Hue difference is the primary criteria used.
+    :param p1: First input pixel
+    :param p2: Second input pixel
+    :param ref: Reference pixel
+    :return: True if p1 is closer to ref than p2.
+    """
+    hue_diff = px_distance_hue(p1, ref) - px_distance_hue(p2, ref)
+    if hue_diff != 0:
+        return hue_diff < 0
+
+    return px_distance(p1, ref) - px_distance(p2, ref) < 0
+
+
+def find_closest_match(color_ref: tuple, colors: list[tuple]) -> tuple:
     """
     Finds the color in given list that has minimal distance to the given pixel.
 
-    :param px: Given pixel to complare with.
+    :param color_ref: Given pixel color to complare with.
     :param colors: List of available colors.
     :return: Color from ``colors`` that matches ``px`` the best.
     """
-    min_dist = 3 * (256 ** 2)
-    argmin_dist = None
+    closest_match = colors[0]
 
-    for c in colors:
-        dist = px_distance(px, c)
-        if dist < min_dist:
-            min_dist, argmin_dist = dist, c
+    for color in colors:
+        if compare_px(color, closest_match, color_ref):
+            closest_match = color
 
-    return argmin_dist
+    return closest_match
 
 
 def convert_img(img: np.ndarray, colors: list[tuple]) -> np.ndarray:
