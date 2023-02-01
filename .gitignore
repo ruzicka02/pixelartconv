@@ -1,8 +1,7 @@
 .idea/
 **/__pycache__/
 
-export.png
-export_scaled.png
+**/*export*.png
 
 dist/
 *.egg-info/

@@ -30,20 +30,19 @@ if file_name[0] == '-':
 
 start_time = time()
 
+print(f"Searched path is: {(Path() / 'img').resolve()}")
+
 img = paconv.file_management.load_image(file_name, dims)
 colors = paconv.file_management.load_colors(file_name)
-
-print(paconv.file_management)
-print(paconv.file_management.load_image)
-print(img)
 
 if img is None or colors is None:
     print("One of the files were not found/opened correctly.")
     print(more_info)
+
     sys.exit(1)
 
 res = paconv.logic.convert_img(img, colors)
-paconv.file_management.save_image(res, False)
+path = paconv.file_management.save_image(res, False)
 
-print("Conversion was successful.")
+print(f"Conversion was successful.\nImage saved to {path}")
 print(f"Duration: {time() - start_time:.2f} s")

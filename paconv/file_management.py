@@ -40,8 +40,8 @@ def load_image(name: str, dims: tuple):
     :return: numpy.ndarray or None
     """
     name += ".png"
-    path = Path(__file__).parent.parent
-    path = (path / 'img' / name).resolve()
+    path = (Path() / 'img' / name).resolve()
+
     try:
         image = image_prepare(path, dims)
         return image
@@ -49,9 +49,17 @@ def load_image(name: str, dims: tuple):
         return None
 
 
-def save_image(data: np.ndarray, show: bool = False, name: str = "export"):
-    path = Path(__file__).parent.parent
-    path = (path / (name + ".png")).resolve()
+def save_image(data: np.ndarray, show: bool = False, name: str = "export") -> Path:
+    """
+    Saves the given numpy array as an image with given name. Returns the path 
+    to which file has been saved.
+
+    :param np.ndarray data: Source image data.
+    :param bool show: EXPERIMENTAL - Shows the image with built-in Pillow function when set as True.
+    :param str name: File name.
+    :return: Resulting file path.
+    """
+    path = (Path() / "img" / (name + ".png")).resolve()
 
     image = Image.fromarray(np.uint8(data)).convert('RGB')
     image.save(path)
@@ -65,6 +73,8 @@ def save_image(data: np.ndarray, show: bool = False, name: str = "export"):
     if show:
         image.show()
 
+    return path
+
 
 def load_colors(name: str):
     """
@@ -75,8 +85,7 @@ def load_colors(name: str):
     """
 
     name += ".txt"
-    path = Path(__file__).parent.parent
-    path = (path / 'img' / name).resolve()
+    path = (Path() / 'img' / name).resolve()
 
     if not path.is_file():
         return None
