@@ -2,7 +2,7 @@ import sys
 from pathlib import Path
 from time import time
 
-import logic, file_management
+import paconv.logic, paconv.file_management
 
 more_info = "For more info, type:\n    python paconv --help"
 
@@ -30,16 +30,20 @@ if file_name[0] == '-':
 
 start_time = time()
 
-img = file_management.load_image(file_name, dims)
-colors = file_management.load_colors(file_name)
+img = paconv.file_management.load_image(file_name, dims)
+colors = paconv.file_management.load_colors(file_name)
+
+print(paconv.file_management)
+print(paconv.file_management.load_image)
+print(img)
 
 if img is None or colors is None:
     print("One of the files were not found/opened correctly.")
     print(more_info)
     sys.exit(1)
 
-res = logic.convert_img(img, colors)
-file_management.save_image(res, False)
+res = paconv.logic.convert_img(img, colors)
+paconv.file_management.save_image(res, False)
 
 print("Conversion was successful.")
 print(f"Duration: {time() - start_time:.2f} s")

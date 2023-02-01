@@ -3,3 +3,6 @@
 
 export.png
 export_scaled.png
+
+dist/
+*.egg-info/
