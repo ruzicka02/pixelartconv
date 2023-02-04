@@ -2,11 +2,12 @@ import sys
 from pathlib import Path
 from time import time
 
-import paconv.logic, paconv.file_management
+import paconv
+# import logic, file_management
 
 more_info = "For more info, type:\n    python paconv --help"
 
-if len(sys.argv) not in [2, 4]:
+if len(sys.argv) not in [2, 3, 4]:
     print("""Invalid syntax, please use one of the following:
     python paconv [file_name]
     python paconv [file_name] [width] [height]
@@ -15,7 +16,9 @@ if len(sys.argv) not in [2, 4]:
     sys.exit(1)
 
 file_name = sys.argv[1]
-dims = (int(sys.argv[2]), int(sys.argv[3])) if len(sys.argv) > 2 else (16, 16)
+height = int(sys.argv[2]) if len(sys.argv) > 2 else 16
+width = int(sys.argv[3]) if len(sys.argv) > 3 else None  # else... will be calculated when image is loaded
+dims = (width, height)
 
 if file_name == "--help":
     path = (Path(__file__).parent / "help.txt").resolve()
@@ -30,7 +33,7 @@ if file_name[0] == '-':
 
 start_time = time()
 
-print(f"Searched path is: {(Path() / 'img').resolve()}")
+print(f"Searched path is: {(Path().absolute() / Path(file_name)).parent.resolve()}")
 
 img = paconv.file_management.load_image(file_name, dims)
 colors = paconv.file_management.load_colors(file_name)
