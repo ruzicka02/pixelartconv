@@ -1,6 +1,6 @@
-# PAConv - Pixel Art Converter
+# PixelArtConv - Pixel Art Converter
 
-Python script to quickly convert your image into a "pixel art" style. Image is downscaled and its color palette is reduced to only handful given colors.
+Python script/package to quickly convert your image into a "pixel art" style. Image is downscaled and its color palette is reduced to only handful given colors.
 
 Created by Simon Ruzicka, 2023
 
@@ -8,20 +8,20 @@ Created by Simon Ruzicka, 2023
 
 Original photo:
 
-<img src="img/seagull.png" width=512></img>
+<img src="https://raw.githubusercontent.com/ruzicka02/paconv/master/img/seagull.png" width=512></img>
 
 Generated pixel-art image - originally 128 px in height, with manually specified color palette:
 
-<img src="img/seagull_res128.png" width=512></img>
+<img src="https://raw.githubusercontent.com/ruzicka02/paconv/master/img/seagull_res128.png" width=512></img>
 
-You can find more examples on the [GitHub project page](https://github.com/ruzicka02/paconv) including the text color palettes.
+You can find more examples on the [GitHub project page](https://github.com/ruzicka02/pixelartconv) including the text color palettes.
 
 ## Installation
 
 You can install this package with the following command:
 
 ```shell
-pip install paconv
+pip install pixelartconv
 ```
 
 Alternatively, you can download this repository and install it manually by yourself.
@@ -45,9 +45,9 @@ The optional list of colors must have the following format (in RGB):
 You can launch the script using the following commands:
 
 ```
-python -m paconv [file_name]
-python -m paconv [file_name] [height]
-python -m paconv [file_name] [height] [width]
+python -m pixelartconv [file_name]
+python -m pixelartconv [file_name] [height]
+python -m pixelartconv [file_name] [height] [width]
 ```
 
 The behavior of script is as follows:
@@ -76,11 +76,12 @@ def convert(file_name: str, dims: tuple, palette_size: int = 6) -> float:
 This will generate the image in the same way as if the script was launched. For example, the following snippet:
 
 ```python
-import paconv
-paconv.convert("test_image", (80, 120))
+import pixelartconv
+
+pixelartconv.convert("test_image", (80, 120))
 ```
 
-will result in the same generated image as the terminal command `python -m paconv test_image 80 120`.
+will result in the same generated image as the terminal command `python -m pixelartconv test_image 80 120`.
 
 ## Results
 

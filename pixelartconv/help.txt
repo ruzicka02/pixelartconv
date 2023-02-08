@@ -1,4 +1,4 @@
-PAConv - Pixel Art Converter
+PixelArtConv - Pixel Art Converter
 Created by Simon Ruzicka, 2023
 
 First of all, make sure that the source image named [file_name].png is located

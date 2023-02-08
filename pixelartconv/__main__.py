@@ -1,14 +1,14 @@
 import sys
 from pathlib import Path
 
-import paconv.script
+import pixelartconv.script
 
-more_info = "For more info, type:\n    python -m paconv --help"
+more_info = "For more info, type:\n    python -m pixelartconv --help"
 
 if len(sys.argv) not in [2, 3, 4]:
     print("""Invalid syntax, please use one of the following:
-    python paconv [file_name]
-    python paconv [file_name] [width] [height]
+    python -m pixelartconv [file_name]
+    python -m pixelartconv [file_name] [width] [height]
     """)
     print(more_info)
     sys.exit(1)
@@ -30,6 +30,6 @@ if file_name[0] == '-':
     sys.exit(1)
 
 try:
-    duration = paconv.script.convert(file_name, dims)
+    duration = pixelartconv.script.convert(file_name, dims)
 except (ValueError, FileNotFoundError):  # correct exit code when issues encountered
     sys.exit(1)

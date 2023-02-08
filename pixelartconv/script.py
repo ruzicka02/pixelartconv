@@ -24,7 +24,7 @@ def convert(file_name: str, dims: tuple, palette_size: int = 6) -> float:
         img = file_management.load_image(file_name, dims)
     except (ValueError, FileNotFoundError) as err:
         print(err)
-        print("For more info, type:\n    python -m paconv --help")
+        print("For more info, type:\n    python -m pixelartconv --help")
         raise
 
     try:
@@ -33,7 +33,7 @@ def convert(file_name: str, dims: tuple, palette_size: int = 6) -> float:
         colors = file_management.generate_colors(file_name, color_count=palette_size)
     except ValueError as err:
         print(err)
-        print("For more info, type:\n    python -m paconv --help\nFallback to generated color palette...")
+        print("For more info, type:\n    python -m pixelartconv --help\nFallback to generated color palette...")
         colors = file_management.generate_colors(file_name, color_count=palette_size)
         # raise
 

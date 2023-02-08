@@ -3,12 +3,12 @@ requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "paconv_ruzicka02"
-version = "0.2.0"
+name = "pixelartconv"
+version = "1.0.3"
 authors = [
   { name="Simon Ruzicka", email="sima.ruzicka@gmail.com" },
 ]
-description = "PAConv - Pixel Art Converter"
+description = "PixelArtConv - Pixel Art Converter"
 readme = "README.md"
 requires-python = ">=3.9"
 classifiers = [
