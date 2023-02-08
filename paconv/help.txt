@@ -1,22 +1,22 @@
 PAConv - Pixel Art Converter
 Created by Simon Ruzicka, 2023
 
-First of all, make sure that the following files exist:
-  - source image [file_name].png
-  - list of colors [file_name].txt
+First of all, make sure that the source image named [file_name].png is located
+in your current working directory. In case the file is in another directory, include
+the relative path instead of [file_name] when launching the script.
 
-These files should be located in your current working directory. In case the files
-are in another directory, include their common path instead of [file_name].
+In addition, you can include a list of colors named [file_name].txt. In that case,
+the script parameter must be only the common name of the files - without any
+filename extension. Both files must be in one directory so that the script
+locates them both correctly.
 
-NOTE: Both files must be in one directory so that the script locates them both correctly.
-
-The list of colors in RGB must have the following format:
+The optional list of colors must have the following format (in RGB):
 
 #00ff00
 #ff00ff
 ...
 
-Then, launch the script using:
+Then, you can launch the script using one of the following commands:
 
 python -m paconv [file_name]
 1) The resulting image will be 16 px in height - width will be automatically calculated.
