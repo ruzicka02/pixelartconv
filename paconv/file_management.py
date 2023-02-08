@@ -6,6 +6,7 @@ from pathlib import Path
 
 import numpy as np
 from PIL import Image, ImageOps, UnidentifiedImageError
+from colorthief import ColorThief
 
 
 def image_prepare(path: Path, dims: tuple) -> np.ndarray:
@@ -46,13 +47,15 @@ def load_image(name: str, dims: tuple):
     :raise FileNotFoundError: Image not found on given path.
     :raise ValueError: File with this name was found but was invalid.
     """
-    name += ".png"
+    if name[-4:] != ".png":
+        name += ".png"
     path = (Path() / name).resolve()
+
+    if not path.is_file():
+        raise FileNotFoundError(f"File not found at searched address: {path}")
 
     try:
         image = image_prepare(path, dims)
-    except FileNotFoundError:
-        raise FileNotFoundError(f"File not found at searched address: {path}")
     except UnidentifiedImageError:
         raise ValueError(f"File {name} seems to be problematic - check correct file formatting.")
     except (ValueError, AssertionError) as err:
@@ -71,6 +74,9 @@ def save_image(data: np.ndarray, show: bool = False, name: str = "export") -> Pa
     :param str name: File name.
     :return: Resulting file path.
     """
+    if name[-4:] == ".png":
+        name = name[:-4]
+
     path = (Path() / (name + ".png")).resolve()
     name = name.split("/")[-1]  # remove potential directories in path
 
@@ -89,18 +95,19 @@ def save_image(data: np.ndarray, show: bool = False, name: str = "export") -> Pa
     return (path.parent / (name + ".png")).resolve()
 
 
-def load_colors(name: str):
+def load_colors(name: str) -> list[tuple]:
     """
-    Loads color data from a text file in the current path. These will be returned as
+    Loads a color palette from a text file in the current path. Palette will be returned as
     tuples of three integers between 0 and 255.
 
     :param str name: File name (or path).
-    :return: List of tuples.
+    :return: List of tuples - (r, g, b).
     :raise FileNotFoundError: When file with given name/path is not found.
     :raise ValueError: File with this name was found but was invalid.
     """
 
-    name += ".txt"
+    if name[-4:] != ".txt":
+        name += ".txt"
     path = (Path() / name).resolve()
 
     if not path.is_file():
@@ -116,3 +123,31 @@ def load_colors(name: str):
         raise
 
     return color_codes
+
+
+def generate_colors(name: str, color_count: int = 6) -> list[tuple]:
+    """
+    Generates a color palette from the image in the current path using the `colorthief` package.
+    Palette will be returned as tuples of three integers between 0 and 255.
+
+    :param str name: File name (or path).
+    :param int color_count: Amount of colors to be generated.
+    :return: List of tuples - (r, g, b).
+    :raise FileNotFoundError: When image with given name/path is not found.
+    :raise ValueError: Image with this name was found but was invalid.
+    """
+
+    if name[-4:] != ".png":
+        name += ".png"
+    path = (Path() / name).resolve()
+
+    if not path.is_file():
+        raise FileNotFoundError(f"File not found at searched address: {path}")
+
+    try:
+        color_thief = ColorThief(path)
+        palette = color_thief.get_palette(color_count=color_count, quality=5)
+    except UnidentifiedImageError:
+        raise ValueError(f"File {name} seems to be problematic - check correct file formatting.")
+    else:
+        return palette
