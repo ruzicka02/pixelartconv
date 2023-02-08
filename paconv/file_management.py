@@ -38,26 +38,27 @@ def image_prepare(path: Path, dims: tuple) -> np.ndarray:
 def load_image(name: str, dims: tuple):
     """
     Loads a PNG image from the current path, performs various operations
-    and returns it as an array. In case something goes wrong, returns None.
+    and returns it as an array. In case something goes wrong, raises an exception.
 
     :param str name: File name.
     :param tuple dims: Pair of target image dimensions (width, height).
-    :return: numpy.ndarray or None
+    :return: Image as a numpy.ndarray
+    :raise FileNotFoundError: Image not found on given path.
+    :raise ValueError: File with this name was found but was invalid.
     """
     name += ".png"
     path = (Path() / name).resolve()
 
     try:
         image = image_prepare(path, dims)
-        return image
     except FileNotFoundError:
-        print(f"File {name} not found.")
+        raise FileNotFoundError(f"File not found at searched address: {path}")
     except UnidentifiedImageError:
-        print(f"File {name} seems to be problematic - check correct file formatting.")
+        raise ValueError(f"File {name} seems to be problematic - check correct file formatting.")
     except (ValueError, AssertionError) as err:
-        print(err)
-
-    return None
+        raise ValueError(err)
+    else:
+        return image
 
 
 def save_image(data: np.ndarray, show: bool = False, name: str = "export") -> Path:
@@ -71,6 +72,7 @@ def save_image(data: np.ndarray, show: bool = False, name: str = "export") -> Pa
     :return: Resulting file path.
     """
     path = (Path() / (name + ".png")).resolve()
+    name = name.split("/")[-1]  # remove potential directories in path
 
     image = Image.fromarray(np.uint8(data)).convert('RGB')
     image.save(path)
@@ -84,26 +86,33 @@ def save_image(data: np.ndarray, show: bool = False, name: str = "export") -> Pa
     if show:
         image.show()
 
-    return path
+    return (path.parent / (name + ".png")).resolve()
 
 
 def load_colors(name: str):
     """
-    Loads color data from a text file in the current path.
+    Loads color data from a text file in the current path. These will be returned as
+    tuples of three integers between 0 and 255.
 
-    :param str name: File name.
-    :return: List of tuples (color codes, length 3) or None
+    :param str name: File name (or path).
+    :return: List of tuples.
+    :raise FileNotFoundError: When file with given name/path is not found.
+    :raise ValueError: File with this name was found but was invalid.
     """
 
     name += ".txt"
     path = (Path() / name).resolve()
 
     if not path.is_file():
-        print(f"File {name} not found.")
-        return None
+        raise FileNotFoundError(f"File not found at searched address: {path}")
 
     with open(path, 'r') as file:
         lines = [line.rstrip().lstrip('#') for line in file]
 
-    color_codes = [tuple(int(ln[i:i + 2], 16) for i in (0, 2, 4)) for ln in lines]
+    try:
+        color_codes = [tuple(int(ln[i:i + 2], 16) for i in (0, 2, 4)) for ln in lines]
+    except ValueError as err:
+        err.args = ("Data within file do not have the correct format.",)
+        raise
+
     return color_codes
