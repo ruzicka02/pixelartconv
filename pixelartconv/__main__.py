@@ -16,7 +16,7 @@ if len(sys.argv) not in [2, 3, 4]:
     sys.exit(1)
 
 file_name = sys.argv[1]
-height = int(sys.argv[2]) if len(sys.argv) > 2 else 16
+height = int(sys.argv[2]) if len(sys.argv) > 2 else 64
 width = int(sys.argv[3]) if len(sys.argv) > 3 else None  # else... will be calculated when image is loaded
 dims = (width, height)
 

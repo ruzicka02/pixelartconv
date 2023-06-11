@@ -51,7 +51,7 @@ python -m pixelartconv [file_name] [height] [width]
 ```
 
 The behavior of script is as follows:
-1) The resulting image will be 16 px in height - width will be automatically calculated from the original image ratio.
+1) The resulting image will be 64 px in height - width will be automatically calculated from the original image ratio.
 2) The resulting image will have given height - width will be automatically calculated from the original image ratio.
 3) The resulting image will have given height and width.
 
