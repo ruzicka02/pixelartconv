@@ -38,7 +38,7 @@ def image_prepare(path: Path, dims: tuple) -> np.ndarray:
 
 def load_image(name: str, dims: tuple):
     """
-    Loads a PNG image from the current path, performs various operations
+    Loads an image from the current path, performs various operations
     and returns it as an array. In case something goes wrong, raises an exception.
 
     :param str name: File name.
@@ -47,8 +47,9 @@ def load_image(name: str, dims: tuple):
     :raise FileNotFoundError: Image not found on given path.
     :raise ValueError: File with this name was found but was invalid.
     """
-    if name[-4:] != ".png":
+    if "." not in name:  # add .png suffix if image has no suffix
         name += ".png"
+    
     path = (Path() / name).resolve()
 
     if not path.is_file():
@@ -74,8 +75,8 @@ def save_image(data: np.ndarray, show: bool = False, name: str = "export") -> Pa
     :param str name: File name.
     :return: Resulting file path.
     """
-    if name[-4:] == ".png":
-        name = name[:-4]
+    if "." in name:  # strip the current suffix (expected .png)
+        name = ".".join(name.split(".")[:-1])
 
     path = (Path() / (name + ".png")).resolve()
     name = name.split("/")[-1]  # remove potential directories in path
@@ -106,8 +107,10 @@ def load_colors(name: str) -> list[tuple]:
     :raise ValueError: File with this name was found but was invalid.
     """
 
-    if name[-4:] != ".txt":
-        name += ".txt"
+    if "." in name:  # strip the current suffix (expected .png)
+        name = ".".join(name.split(".")[:-1])
+    name += ".txt"
+
     path = (Path() / name).resolve()
 
     if not path.is_file():

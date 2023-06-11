@@ -3,6 +3,8 @@ from pathlib import Path
 
 import pixelartconv.script
 
+print(pixelartconv.__path__)
+
 more_info = "For more info, type:\n    python -m pixelartconv --help"
 
 if len(sys.argv) not in [2, 3, 4]:
@@ -18,7 +20,7 @@ height = int(sys.argv[2]) if len(sys.argv) > 2 else 16
 width = int(sys.argv[3]) if len(sys.argv) > 3 else None  # else... will be calculated when image is loaded
 dims = (width, height)
 
-if file_name == "--help":
+if "--help" in sys.argv or "-h" in sys.argv:
     path = (Path(__file__).parent / "help.txt").resolve()
     with open(path) as f:
         print(f.read())
