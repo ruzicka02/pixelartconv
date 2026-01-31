@@ -1,21 +1,31 @@
-[build-system]
-requires = ["setuptools>=61.0"]
-build-backend = "setuptools.build_meta"
-
 [project]
 name = "pixelartconv"
 version = "1.1.1"
 authors = [
-  { name="Simon Ruzicka", email="sima.ruzicka@gmail.com" },
+  { name="Simon Ruzicka", email="simon.ruzicka@protonmail.com" },
 ]
 description = "PixelArtConv - Pixel Art Converter"
 readme = "README.md"
+
 requires-python = ">=3.9"
+dependencies = [
+  "numpy>=1.23,<2",
+  "Pillow>=9",
+  "colorthief",
+  "opencv-python",
+]
+
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
 ]
+
+[build-system]
+requires = ["setuptools>=61.0"]
+
+[project.scripts]
+pixelartconv = "pixelartconv"
 
 [project.urls]
 "Homepage" = "https://github.com/ruzicka02/paconv"
