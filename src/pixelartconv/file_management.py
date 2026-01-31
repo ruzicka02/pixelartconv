@@ -141,7 +141,7 @@ def generate_colors(name: str, color_count: int = 6) -> list[tuple]:
     :raise ValueError: Image with this name was found but was invalid.
     """
 
-    if name[-4:] != ".png":
+    if "." not in name:  # add .png suffix if image has no suffix
         name += ".png"
     path = (Path() / name).resolve()
 
