@@ -2,6 +2,8 @@
 Internal logic for converting images to given colors.
 """
 
+import logging
+
 import numpy as np
 import cv2
 
@@ -115,11 +117,11 @@ def convert_img(img: np.ndarray, colors: list[tuple]) -> np.ndarray:
         distances.append(np.sum((img_lab - color_lab) ** 2, axis=-1))  # Euclidean distances of LAB colors
 
     dist_array = np.array(distances)  # (height, width, colorcount)
-    print(dist_array.shape)
+    logging.debug(f"{dist_array.shape=}")
 
     indexes = np.argmin(dist_array, axis=0)  # (height, width)
-    # print(indexes)
-    # print(indexes.shape)
+    logging.debug(f"{indexes=}")
+    logging.debug(f"{indexes.shape=}")
 
     res = np.zeros(img.shape)
     for i in range(img.shape[0]):

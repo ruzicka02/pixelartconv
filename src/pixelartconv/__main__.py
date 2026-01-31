@@ -1,11 +1,14 @@
 import sys
 import argparse
+import logging
 from pathlib import Path
 
 import pixelartconv
 
 
 def main():
+    logging.basicConfig(level=logging.INFO)
+
     path = (Path(__file__).parent / "help.txt").resolve()
     with open(path) as f:
         help_text = f.read()
@@ -28,7 +31,8 @@ def main():
 
     try:
         pixelartconv.convert(args.file_name, dims)
-    except (ValueError, FileNotFoundError):  # correct exit code when issues encountered
+    except (ValueError, FileNotFoundError) as e:
+        logging.error(f"{type(e)}: {e}")
         sys.exit(1)
 
 
