@@ -9,13 +9,9 @@ import pixelartconv
 def main():
     logging.basicConfig(level=logging.INFO)
 
-    path = (Path(__file__).parent / "help.txt").resolve()
-    with open(path) as f:
-        help_text = f.read()
-
     parser = argparse.ArgumentParser(
         description="Convert images to pixel art with a limited color palette.",
-        epilog=help_text,
+        epilog=pixelartconv.HELP_STRING,
         formatter_class=argparse.RawTextHelpFormatter,
     )
     parser.add_argument("file_name", type=str, help="Name of file(s) or their relative path.")

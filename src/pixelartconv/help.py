@@ -1,4 +1,4 @@
----
+HELP_STRING = """---
 
 # PixelArtConv - Pixel Art Converter
 
@@ -42,4 +42,4 @@ The optional list of colors must have the following format (in RGB):
 #00ff00
 #ff00ff
 ...
-```
+```"""
