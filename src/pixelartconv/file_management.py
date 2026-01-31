@@ -24,7 +24,7 @@ def image_prepare(path: Path, dims: tuple) -> np.ndarray:
         "Original image dimensions must be greater or equal to new dimensions."
     )
 
-    image = ImageOps.fit(image, dims, method=Image.BICUBIC)
+    image = ImageOps.fit(image, dims, method=Image.Resampling.BICUBIC)
     image = np.asarray(image)
 
     # remove alpha channel/transparency
@@ -88,7 +88,7 @@ def save_image(data: np.ndarray, show: bool = False, name: str = "export") -> Pa
     path = (path.parent / (name + "_scaled.png")).resolve()
     factor = round(512 / data.shape[0])  # type 'int'
     if factor > 1:
-        image = ImageOps.scale(image, factor, resample=Image.NEAREST)
+        image = ImageOps.scale(image, factor, resample=Image.Resampling.NEAREST)
         image.save(path)
 
     if show:
