@@ -1,6 +1,6 @@
 [project]
 name = "pixelartconv"
-version = "1.2.0"
+version = "1.2.1"
 authors = [
   { name="Simon Ruzicka", email="simon.ruzicka@protonmail.com" },
 ]
