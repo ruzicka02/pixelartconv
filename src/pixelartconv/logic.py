@@ -106,9 +106,9 @@ def convert_img(img: np.ndarray, colors: list[tuple]) -> np.ndarray:
     """
     img_lab = cv2.cvtColor(img.astype(np.float32) / 255, cv2.COLOR_RGB2Lab)  # (height, width, 3)
 
-    colors = np.array(colors)
+    colors_arr: np.ndarray = np.array(colors)
     distances = []
-    for color in colors:
+    for color in colors_arr:
         color_lab = cv2.cvtColor(color.reshape(1, 1, 3).astype(np.float32) / 255, cv2.COLOR_RGB2Lab)
         color_lab = color_lab * np.ones(img_lab.shape)  # copy the source image dimensions
 
@@ -124,7 +124,7 @@ def convert_img(img: np.ndarray, colors: list[tuple]) -> np.ndarray:
     res = np.zeros(img.shape)
     for i in range(img.shape[0]):
         for j in range(img.shape[1]):
-            res[i, j] = colors[indexes[i, j]]
+            res[i, j] = colors_arr[indexes[i, j]]
 
     # img = img.copy()
     # i, j = 0, 0
