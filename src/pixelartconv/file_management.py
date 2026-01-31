@@ -20,8 +20,9 @@ def image_prepare(path: Path, dims: tuple) -> np.ndarray:
         dims = (round(dims[1] * image.size[0] / image.size[1]), dims[1])
 
     # cannot upscale image
-    assert image.size[0] >= dims[0] and image.size[1] >= dims[1], \
+    assert image.size[0] >= dims[0] and image.size[1] >= dims[1], (
         "Original image dimensions must be greater or equal to new dimensions."
+    )
 
     image = ImageOps.fit(image, dims, method=Image.BICUBIC)
     image = np.asarray(image)
@@ -49,7 +50,7 @@ def load_image(name: str, dims: tuple):
     """
     if "." not in name:  # add .png suffix if image has no suffix
         name += ".png"
-    
+
     path = (Path() / name).resolve()
 
     if not path.is_file():
@@ -67,7 +68,7 @@ def load_image(name: str, dims: tuple):
 
 def save_image(data: np.ndarray, show: bool = False, name: str = "export") -> Path:
     """
-    Saves the given numpy array as an image with given name. Returns the path 
+    Saves the given numpy array as an image with given name. Returns the path
     to which file has been saved.
 
     :param np.ndarray data: Source image data.
@@ -81,7 +82,7 @@ def save_image(data: np.ndarray, show: bool = False, name: str = "export") -> Pa
     path = (Path() / (name + ".png")).resolve()
     name = name.split("/")[-1]  # remove potential directories in path
 
-    image = Image.fromarray(np.uint8(data)).convert('RGB')
+    image = Image.fromarray(np.uint8(data)).convert("RGB")
     image.save(path)
 
     path = (path.parent / (name + "_scaled.png")).resolve()
@@ -116,11 +117,11 @@ def load_colors(name: str) -> list[tuple]:
     if not path.is_file():
         raise FileNotFoundError(f"File not found at searched address: {path}")
 
-    with open(path, 'r') as file:
-        lines = [line.rstrip().lstrip('#') for line in file]
+    with open(path, "r") as file:
+        lines = [line.rstrip().lstrip("#") for line in file]
 
     try:
-        color_codes = [tuple(int(ln[i:i + 2], 16) for i in (0, 2, 4)) for ln in lines]
+        color_codes = [tuple(int(ln[i : i + 2], 16) for i in (0, 2, 4)) for ln in lines]
     except ValueError as err:
         err.args = ("Data within file do not have the correct format.",)
         raise

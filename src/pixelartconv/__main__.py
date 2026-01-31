@@ -1,11 +1,9 @@
 import sys
 from pathlib import Path
 
-import pixelartconv.script
+import pixelartconv
 
-print(pixelartconv.__path__)
-
-more_info = "For more info, type:\n    python -m pixelartconv --help"
+MORE_INFO = "For more info, type:\n    python -m pixelartconv --help"
 
 
 def main():
@@ -14,7 +12,7 @@ def main():
         python -m pixelartconv [file_name]
         python -m pixelartconv [file_name] [width] [height]
         """)
-        print(more_info)
+        print(MORE_INFO)
         sys.exit(1)
 
     file_name = sys.argv[1]
@@ -30,11 +28,11 @@ def main():
 
     if file_name[0] == "-":
         print("Unknown command option.")
-        print(more_info)
+        print(MORE_INFO)
         sys.exit(1)
 
     try:
-        duration = pixelartconv.script.convert(file_name, dims)
+        pixelartconv.convert(file_name, dims)
     except (ValueError, FileNotFoundError):  # correct exit code when issues encountered
         sys.exit(1)
 

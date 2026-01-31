@@ -1,6 +1,7 @@
 """
 Internal logic for converting images to given colors.
 """
+
 import numpy as np
 import cv2
 
@@ -51,7 +52,7 @@ def px_distance(p1: np.ndarray, p2: np.ndarray) -> int:
     :param weight: Weight of hue in comparison.
     :return: Square of HSL lightness difference.
     """
-    weight = 1.
+    weight = 1.0
 
     assert len(p1) == len(p2) == 3
     hue = px_distance_hue(p1, p2)
@@ -62,7 +63,8 @@ def px_distance(p1: np.ndarray, p2: np.ndarray) -> int:
 
 px_distance_array = np.vectorize(px_distance, otypes=[int], signature="(n),(n)->()")
 
-def compare_px(p1: np.ndarray, p2: np.ndarray, ref: np.ndarray, weight: float = 1.) -> bool:
+
+def compare_px(p1: np.ndarray, p2: np.ndarray, ref: np.ndarray, weight: float = 1.0) -> bool:
     """
     Compares two pixels with a reference pixel. Considers both hue and absolute difference
     with given weight.
